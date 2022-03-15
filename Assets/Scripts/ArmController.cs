@@ -9,7 +9,7 @@ public class ArmController : MonoBehaviour
 
     void FixedUpdate()
     {
-        foreach(JointController joint in joints)
+        foreach (JointController joint in joints)
         {
             if (joint != null) joint.Rotate();
         }

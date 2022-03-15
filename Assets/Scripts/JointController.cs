@@ -92,11 +92,6 @@ public class JointController : MonoBehaviour
     }
 
     public float NormalizeAngle(float angle) {
-        // if (angle<90 || angle>270){
-        //     if (angle>180) angle -= 360;
-        //     if (max>180) max -= 360;
-        //     if (min>180) min -= 360;
-        // }
         if (angle >= 180) angle -= 360;
         if (angle <= -179) angle += 360;
         return angle;
