@@ -4,17 +4,15 @@ using UnityEngine;
 public class ArmController : MonoBehaviour
 {
     [Header("JOINTS")]
-    public JointController shoulderJoint;
-    public JointController elbowJoint;
-    public JointController wristJoint;
-    public JointController jawJoint;
+    [SerializeField]
+    public JointController[] joints;
 
     void FixedUpdate()
     {
-        if (shoulderJoint != null) shoulderJoint.Rotate();
-        if (elbowJoint != null) elbowJoint.Rotate();
-        if (wristJoint != null) wristJoint.Rotate();
-        if (jawJoint != null) jawJoint.Rotate();
+        foreach(JointController joint in joints)
+        {
+            if (joint != null) joint.Rotate();
+        }
     }
 }
 

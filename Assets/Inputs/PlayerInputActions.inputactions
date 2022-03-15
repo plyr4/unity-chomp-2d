@@ -1,0 +1,125 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "Robot",
+            "id": "3c169810-e944-4ee7-a89a-92a3ee69e007",
+            "actions": [
+                {
+                    "name": "RightStickXAxis",
+                    "type": "Value",
+                    "id": "abfff0b7-4f51-4675-b674-2fc38fd74973",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RightStickYAxis",
+                    "type": "Value",
+                    "id": "1e85e792-fc37-413f-ab5b-a0fb0163d39e",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LeftStickXAxis",
+                    "type": "Value",
+                    "id": "ece93f6f-026f-446a-b70a-e7ccd5670499",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LeftStickYAxis",
+                    "type": "Value",
+                    "id": "af6b9846-4081-4ec6-8460-fdd441105bfc",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "ButtonAxis",
+                    "type": "Button",
+                    "id": "a4c1fca7-1ace-4786-a36f-b9d48b9ac816",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e8eadbfb-a25d-4bd3-b72e-0bd7d0db45d1",
+                    "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightStickXAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e74d34a1-6d7f-4039-a783-6efe8f3d69d6",
+                    "path": "<Gamepad>/rightStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightStickYAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef23c3cd-f8c8-4b84-80a1-6dc85d2e1ece",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftStickXAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0496427d-c544-41ae-b309-3d68681f6beb",
+                    "path": "<Gamepad>/leftStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftStickYAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Trigger",
+                    "id": "f91730df-1f61-4f5a-8b82-492b665cb18f",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonAxis",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "positive",
+                    "id": "352c0dfb-94d7-48a4-9c22-a82f830251d9",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

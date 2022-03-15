@@ -1,19 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class JointController : MonoBehaviour
 {
     [SerializeField]
-    [Range(0f,179f)]
-    public float min;
-    [SerializeField]
-    [Range(0f,179f)]
-    public float max;
+    [Range(-179f,179f)]
+    public float min, max, rest;
     [SerializeField]
     public float rotationSpeed;
     [SerializeField]
-    public float returnSpeed;
+    public float restSpeed;
     [SerializeField]
     public float angleApproximationFactor = 0.01f;
     [SerializeField]
@@ -22,25 +20,45 @@ public class JointController : MonoBehaviour
     private Color c;
 
     [SerializeField]
-    public KeyCode key;
-    bool keyDown;
-    
+    public PlayerInput playerInput;
+    private InputAction inputAction;
+    [SerializeField]
+    public string inputActionName;
+    public float axis;
+    public float axisModifier = 1f;
+    [SerializeField]
+    public bool autoRest;
+
+    [ExecuteInEditMode]
+    void OnValidate(){
+        rest = Mathf.Clamp(rest, min, max);
+    }
+
+    private void Awake() {
+        inputAction = playerInput.actions[inputActionName];
+    }
+
     void Start() {
         r = pivot.GetComponent<Renderer>();
         if (r != null) c = r.material.color;
+        transform.localEulerAngles = new Vector3(0, 0, rest);
     }
 
     void Update() {
-        keyDown = Input.GetKey(key);
+        axis = inputAction.ReadValue<float>() * axisModifier;
     }
 
     public void Rotate()
-    {
+    {   
         // process rotation
-        if (keyDown) {
-            transform.Rotate(new Vector3(0f, 0f, rotationSpeed) * Time.deltaTime);        
-        } else {
-            transform.Rotate(new Vector3(0f, 0f, -returnSpeed) * Time.deltaTime);        
+        if (axis > 0f) {
+            // transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(max, Vector3.forward), axis * rotationSpeed * Time.deltaTime);
+            transform.Rotate(new Vector3(0f, 0f, axis * rotationSpeed) * Time.deltaTime);
+        } else if (axis < 0f) {
+            // transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(min, Vector3.forward), -axis * rotationSpeed * Time.deltaTime);
+            transform.Rotate(new Vector3(0f, 0f, axis * rotationSpeed) * Time.deltaTime); 
+        } else if (autoRest) {
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.AngleAxis(rest, Vector3.forward), restSpeed * Time.deltaTime);
         }
 
         // clamp rotation
@@ -59,25 +77,29 @@ public class JointController : MonoBehaviour
     }
 
     public bool Idle() {
-        return (Mathf.Abs(ClampAngle(transform.transform.localEulerAngles.z, min, max) - min) < angleApproximationFactor);
+        float z = Mathf.Clamp(NormalizeAngle(transform.transform.localEulerAngles.z), min, max);
+        return (Mathf.Abs(z - rest) < angleApproximationFactor);
     }
 
     public bool Flexed() {
-        return (Mathf.Abs(max - ClampAngle(transform.transform.localEulerAngles.z, min, max)) < angleApproximationFactor);
+        float z = Mathf.Clamp(NormalizeAngle(transform.transform.localEulerAngles.z), min, max);
+        return (Mathf.Abs(z - min) < angleApproximationFactor) || (Mathf.Abs(max - z) < angleApproximationFactor);
     }
 
     public void ClampRotation() {
-        transform.localEulerAngles = new Vector3(0, 0, ClampAngle(transform.transform.localEulerAngles.z, min, max));
+        float z = Mathf.Clamp(NormalizeAngle(transform.transform.localEulerAngles.z), min, max);
+        transform.localEulerAngles = new Vector3(0, 0, z);
     }
 
-    public float ClampAngle(float angle ,  float min,  float max) {
-        if (angle<90 || angle>270){
-            if (angle>180) angle -= 360;
-            if (max>180) max -= 360;
-            if (min>180) min -= 360;
-        }    
-        angle = Mathf.Clamp(angle, min, max);
-        if (angle<0) angle += 360;
+    public float NormalizeAngle(float angle) {
+        // if (angle<90 || angle>270){
+        //     if (angle>180) angle -= 360;
+        //     if (max>180) max -= 360;
+        //     if (min>180) min -= 360;
+        // }
+        if (angle >= 180) angle -= 360;
+        if (angle <= -179) angle += 360;
         return angle;
     }
+    
 }
