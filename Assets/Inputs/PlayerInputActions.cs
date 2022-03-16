@@ -47,7 +47,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""LeftStickXAxis"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""ece93f6f-026f-446a-b70a-e7ccd5670499"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
@@ -71,6 +71,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftTrigger"",
+                    ""type"": ""Value"",
+                    ""id"": ""217986df-ae4e-450a-9bdc-c90003dbbf00"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -79,7 +88,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""id"": ""e8eadbfb-a25d-4bd3-b72e-0bd7d0db45d1"",
                     ""path"": ""<Gamepad>/rightStick/x"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""RightStickXAxis"",
                     ""isComposite"": false,
@@ -90,7 +99,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""id"": ""e74d34a1-6d7f-4039-a783-6efe8f3d69d6"",
                     ""path"": ""<Gamepad>/rightStick/y"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""RightStickYAxis"",
                     ""isComposite"": false,
@@ -119,7 +128,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Trigger"",
+                    ""name"": ""RightShoulder"",
                     ""id"": ""f91730df-1f61-4f5a-8b82-492b665cb18f"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -139,6 +148,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""ButtonAxis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5244f311-7f80-48bf-b957-d3b9b21ea567"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -152,6 +172,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Robot_LeftStickXAxis = m_Robot.FindAction("LeftStickXAxis", throwIfNotFound: true);
         m_Robot_LeftStickYAxis = m_Robot.FindAction("LeftStickYAxis", throwIfNotFound: true);
         m_Robot_ButtonAxis = m_Robot.FindAction("ButtonAxis", throwIfNotFound: true);
+        m_Robot_LeftTrigger = m_Robot.FindAction("LeftTrigger", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -216,6 +237,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Robot_LeftStickXAxis;
     private readonly InputAction m_Robot_LeftStickYAxis;
     private readonly InputAction m_Robot_ButtonAxis;
+    private readonly InputAction m_Robot_LeftTrigger;
     public struct RobotActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -225,6 +247,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @LeftStickXAxis => m_Wrapper.m_Robot_LeftStickXAxis;
         public InputAction @LeftStickYAxis => m_Wrapper.m_Robot_LeftStickYAxis;
         public InputAction @ButtonAxis => m_Wrapper.m_Robot_ButtonAxis;
+        public InputAction @LeftTrigger => m_Wrapper.m_Robot_LeftTrigger;
         public InputActionMap Get() { return m_Wrapper.m_Robot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -249,6 +272,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @ButtonAxis.started -= m_Wrapper.m_RobotActionsCallbackInterface.OnButtonAxis;
                 @ButtonAxis.performed -= m_Wrapper.m_RobotActionsCallbackInterface.OnButtonAxis;
                 @ButtonAxis.canceled -= m_Wrapper.m_RobotActionsCallbackInterface.OnButtonAxis;
+                @LeftTrigger.started -= m_Wrapper.m_RobotActionsCallbackInterface.OnLeftTrigger;
+                @LeftTrigger.performed -= m_Wrapper.m_RobotActionsCallbackInterface.OnLeftTrigger;
+                @LeftTrigger.canceled -= m_Wrapper.m_RobotActionsCallbackInterface.OnLeftTrigger;
             }
             m_Wrapper.m_RobotActionsCallbackInterface = instance;
             if (instance != null)
@@ -268,6 +294,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @ButtonAxis.started += instance.OnButtonAxis;
                 @ButtonAxis.performed += instance.OnButtonAxis;
                 @ButtonAxis.canceled += instance.OnButtonAxis;
+                @LeftTrigger.started += instance.OnLeftTrigger;
+                @LeftTrigger.performed += instance.OnLeftTrigger;
+                @LeftTrigger.canceled += instance.OnLeftTrigger;
             }
         }
     }
@@ -279,5 +308,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnLeftStickXAxis(InputAction.CallbackContext context);
         void OnLeftStickYAxis(InputAction.CallbackContext context);
         void OnButtonAxis(InputAction.CallbackContext context);
+        void OnLeftTrigger(InputAction.CallbackContext context);
     }
 }

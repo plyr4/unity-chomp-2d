@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArmController : MonoBehaviour
+public class Arm : MonoBehaviour
 {
     [Header("JOINTS")]
     [SerializeField]
-    public JointController[] joints;
+    public TJoint[] joints;
 
     void FixedUpdate()
     {
-        foreach (JointController joint in joints)
+        foreach (TJoint joint in joints)
         {
             if (joint != null) joint.Rotate();
         }
